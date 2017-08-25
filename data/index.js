@@ -28,7 +28,28 @@ function json_reactions(data) {
   return data;
 }
 
+const updateSlackNames = (pairs) =>
+  (db('users')
+    .where({ slack_name: null }))
+  .then(results =>
+    results.filter(v => !v.slack_name))
+  .then(results =>
+    (results.map((e) => {
+      e.slack_name = pairs[e.slack_id];
+      return e;
+    }))
+  )
+  .then(results =>
+    (Promise.all(results.map(v =>
+      db('users')
+      .where({ id: v.id })
+      .update(v))
+    ))
+  )
+  .then(results => console.log(`${results.length} users updated with names`));
+
 module.exports = {
   get,
   save,
+  updateSlackNames,
 };

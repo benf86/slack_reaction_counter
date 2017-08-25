@@ -50,5 +50,6 @@ require('request-promise')
     [cur.slack_name]: cur.slack_id,
   }), {})
 .tap(r => (globals.users = r))
-.tap(r => console.log(JSON.stringify(r, 0, 2)))
+.tap(db.updateSlackNames)
+//.tap(r => console.log(JSON.stringify(r, 0, 2)))
 .then(() => app.listen(8891, () => console.log('Listening...')));
