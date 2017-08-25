@@ -2,9 +2,12 @@ const SLACKTOKEN = require('./authorization').SLACKTOKEN;
 const INTERNALTOKEN = require('./authorization').INTERNALTOKEN;
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const db = require('./data');
 
 const app = express();
+
+app.use(cors());
 
 const router = express.Router();
 router.use(bodyParser.urlencoded({ extended: true }));
@@ -12,12 +15,14 @@ router.use(bodyParser.json());
 app.use(router);
 
 router.post('/event', handleEvent);
+router.get('/graph', sendGraph);
 router.get('/', returnLadder);
 
 const globals = { users: {} };
 const types = require('./eventTypes')(globals);
 
 function handleEvent(req, res, next) {
+  console.log(JSON.stringify(req.body.event, 0, 2));
   return req.body.type === 'url_verification'
     ? res.json({ challenge: req.body.challenge })
     : types[req.body.event.type](req.body.event)
@@ -28,6 +33,10 @@ function returnLadder(req, res, next) {
   if (req.query.token !== INTERNALTOKEN) return res.status(403) && res.send();
   return db.get()
     .then(users => res.json(users));
+}
+
+function sendGraph(req, res, next) {
+  res.sendFile('./bleh.html', { root: __dirname + '/' });
 }
 
 require('request-promise')
