@@ -25,6 +25,14 @@ function json_reactions(data) {
     ? JSON.parse(data.reactions_given)
     : JSON.stringify(data.reactions_given);
 
+  data.interactions_passive = typeof data.interactions_passive === 'string'
+    ? JSON.parse(data.interactions_passive)
+    : JSON.stringify(data.interactions_passive);
+
+  data.interactions_active = typeof data.interactions_active === 'string'
+    ? JSON.parse(data.interactions_active)
+    : JSON.stringify(data.interactions_active);
+
   return data;
 }
 

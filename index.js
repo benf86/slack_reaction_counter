@@ -30,7 +30,7 @@ function handleEvent(req, res, next) {
 }
 
 function returnLadder(req, res, next) {
-  if (req.query.token !== INTERNALTOKEN) return res.status(403) && res.send();
+  //if (req.query.token !== INTERNALTOKEN) return res.status(403) && res.send();
   return db.get()
     .then(users => res.json(users));
 }
