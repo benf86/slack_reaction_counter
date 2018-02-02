@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<head>
+      <meta charset="utf-8" />
+</head>
+<div align='center' id="d3_selectable_force_directed_graph" style="width: 1600px; height: 1200px; margin: auto; margin-bottom: 12px">
+<svg />
+</div>
+
+<link rel='stylesheet' href='d3v4-selectable-zoomable-force-directed-graph.css'>
+
+<script src="./my_source.js"></script>
+<script src="https://d3js.org/d3.v4.js"></script>
+<script src="./d3v4-brush-lite.js"></script>
+<script src="./d3v4-selectable-force-directed-graph.js"></script>
+
+<script>
+var svg = d3.select('#d3_selectable_force_directed_graph');
+
+var data = null;
+
+var xhr = new XMLHttpRequest();
+xhr.withCredentials = true;
+
+xhr.addEventListener("readystatechange", function () {
+  if (this.readyState === 4) {
+    console.log(this.responseText);
+    createV4SelectableForceDirectedGraph(svg, parseUsers(JSON.parse(this.responseText)))
+  }
+});
+
+xhr.open("GET", "http://kijanca.org:8891/?token=nakljucnitokencist");
+xhr.setRequestHeader("Cache-Control", "no-cache");
+xhr.setRequestHeader("Postman-Token", "cbe2c976-f802-0256-dfdb-b5d5b5e6ea7b");
+
+xhr.send(data);
+
+</script>

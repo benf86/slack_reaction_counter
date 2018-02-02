@@ -14,8 +14,10 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 app.use(router);
 
+app.use(express.static('./network'))
 router.post('/event', handleEvent);
 router.get('/graph', sendGraph);
+router.get('/network', sendNetwork);
 router.get('/', returnLadder);
 
 const globals = { users: {} };
@@ -30,13 +32,17 @@ function handleEvent(req, res, next) {
 }
 
 function returnLadder(req, res, next) {
-  //if (req.query.token !== INTERNALTOKEN) return res.status(403) && res.send();
+  if (req.query.token !== INTERNALTOKEN) return res.status(403) && res.send();
   return db.get()
     .then(users => res.json(users));
 }
 
 function sendGraph(req, res, next) {
   res.sendFile('./bleh.html', { root: __dirname + '/' });
+}
+
+function sendNetwork(req, res, next) {
+  res.sendFile('./network/index.html', { root: __dirname + '/' });
 }
 
 require('request-promise')
